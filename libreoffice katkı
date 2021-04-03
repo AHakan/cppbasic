@@ -1,0 +1,90 @@
+Linkler
+-------
+Libre office developer central => https://devcentral.libreoffice.org/
+
+Libre office wiki => https://wiki.documentfoundation.org/Main_Page
+
+Libre office git => https://github.com/LibreOffice
+
+Collabora online git => https://github.com/CollaboraOnline/
+
+Libre office gerrit(kodların gönderileceği site) => https://gerrit.libreoffice.org/
+
+Libre office autogen.input => https://gist.github.com/mrkara/18cefc8b48e403df5677b03c45145dcc
+
+Libre office kaynak kodu => https://www.libreoffice.org/about-us/source-code/
+
+Libre office kaynak kodu tarama => https://opengrok.libreoffice.org/
+
+Libre office Easyhacks => https://wiki.documentfoundation.org/Development/EasyHacks/by_Required_Skill/Skill_C%2B%2B
+
+
+Libre Office Katkı Yapmak
+-------------------------
+
+SSH Anahtar Oluşturma
+---------------------
+Ana dizine git => cd
+
+Daha sonra komutu gir => ssh-keygen
+
+Parola gir => 123456
+
+Açık anahtarı ekrana yazdır => cat .ssh/id_rsa.pub
+
+Açık anahtarı kopyala gerrit.libreoffice e add ssh key de ve kaydet.
+
+
+
+Autogen Dosyası Hazırlama
+-------------------------
+Libre office kaynak kodunu clone la => git clone https://www.libreoffice.org/about-us/source-code/
+
+autogen.input dosyasını oluşturuyoruz. => nano autogen.input
+
+Yukarda paylaşılmış olan autogen.input dosyasından kodları kopyala ve yapıştır kaydet.
+
+autogen.input dosyasını core/ içine kopyala
+
+autogen.sh ı çalıştır. eksik paket olursa kuruyoruz. kontrol etsin kontrol bitince make yazıyoruz.
+
+
+
+Gerrit Düzenlemeleri Yapma
+--------------------------
+/core içinde => ./logerrit setup
+
+gerirt kullanıcı adını gir.
+
+ekrana gelen konfigurasyonu ~/.ssh/config içine yazıyoruz.
+
+daha sonra test ediyoruz => ./logerrit test
+
+ssh doğrulaması isteyecek yes yaz parolanı gir 5 saniye bekle enter a bas.
+
+
+
+Katkı yapmak için
+-----------------
+Önce yeni branch oluştur master branch i kirletme => git checkout -b commit-second
+
+Commit mesajının bir şekli var => git commit -a -m "tdf#hatakodu: mesaj"
+
+Log a bak ve kendi adını gör => git log
+
+Logerrit e gönder => ./logerrit submit master
+
+Branch ile işimiz bitince master a geri dönüyoruz. => git checkout master
+
+(Hafta da bir master branchı güncellemek gerekir => git pull -r)
+
+Master branchin güncel olup olmadığını kontrol et => git log
+
+
+
+Kısa kısa notlar
+----------------
+
+Bir önceki commiti güncellemek => git commit -a --amend
+
+grep kullanımı => git grep ifndef | grep HXX | grep sw
