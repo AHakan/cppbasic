@@ -16,14 +16,17 @@ int main(int argc, const char** argv)
 		return -1;
 	}
 
-	// Bind the socket to a IP / port
-	struct sockaddr_in hint;
-	hint.sin_family = AF_INET;
-	hint.sin_addr.s_addr = INADDR_ANY;
-	hint.sin_port = htons(8082);
-	// inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
+	int port = 8080;
+    std::string ipAdd= "127.0.0.1";
 
-	if( bind(listening, (struct sockaddr *)&hint, sizeof(hint)) < 0 )
+	// Bind the socket to a IP / port
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	// hint.sin_addr.s_addr = INADDR_ANY;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAdd.c_str(), &hint.sin_addr);
+
+	if( bind(listening, (sockaddr *)&hint, sizeof(hint)) < 0 )
 	{
 		std::cerr << "Can't bind to IP/port";
 		return -2;
@@ -36,15 +39,15 @@ int main(int argc, const char** argv)
 		return -3;
 	}
 
+	std::cout << "Server started! IP: " << ipAdd << ":" << port << "\r\n";
+
 	// Accept a call
 	sockaddr_in client;
 	socklen_t clientSize = sizeof(client);
 	char host[NI_MAXHOST] = {0};
 	char svc[NI_MAXSERV] = {0};
 
-	int clientSocket = accept(listening,
-							  (struct sockaddr *)&client,
-							  &clientSize);
+	int clientSocket = accept(listening, (sockaddr *)&client, &clientSize);
 
 	if( clientSocket == -1 )
 	{
@@ -57,13 +60,7 @@ int main(int argc, const char** argv)
 
 	memset(host, 0, NI_MAXHOST);
 
-	int result = getnameinfo((struct sockaddr *)&client,
-							  sizeof(client),
-							  host,
-							  NI_MAXHOST,
-							  svc,
-							  NI_MAXSERV,
-							  0);
+	int result = getnameinfo((sockaddr *)&client, sizeof(client), host, NI_MAXHOST, svc, NI_MAXSERV, 0);
 
 	if( result )
 	{
@@ -97,7 +94,7 @@ int main(int argc, const char** argv)
 
 		std::cout << "Received: " << std::string(buf, 0, bytesRecv) << std::endl;
 
-		// send(clientSocket, buf, bytesRecv + 1, 0);
+		send(clientSocket, buf, bytesRecv + 1, 0);
 	}
 
 	// Close the socket
