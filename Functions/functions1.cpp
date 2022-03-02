@@ -58,8 +58,10 @@ int main(int argc, char const *argv[])
     Company company1("A Company");
 
     company1.maximumSalary(10000,15000,20000);
-    
+
     company1.displayCompanyInfo();
+
+
 
     return 0;
 }
