@@ -14,3 +14,4 @@ your subclasses to behave in the same way as the objects of your superclass.
 The principle defines that no code should be forced to depend on methods it does not use.
 
 ## 5- Dependency Inversion Principle
+The general idea of this principle is as simple as it is important: High-level modules, which provide complex logic, should be easily reusable and unaffected by changes in low-level modules, which provide utility features.
